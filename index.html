@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Token Talkers — The Hidden Layer</title>
+<meta name="description" content="A quiet room for those who speak the language of machines. Invite-only." />
+
+<!-- Open Graph / social preview -->
+<meta property="og:title" content="Token Talkers — The Hidden Layer" />
+<meta property="og:description" content="A quiet room for those who speak the language of machines. Mind the door." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg:        #0a0b0e;
+    --bg-2:      #101218;
+    --ink:       #e8e4d8;
+    --ink-dim:   #9a958a;
+    --gold:      #c8a35a;
+    --gold-soft: #e0c587;
+    --neon:      #39d8c4;
+    --line:      rgba(200, 163, 90, 0.28);
+    --viber:     #7360f2;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: radial-gradient(ellipse at 50% -10%, #15171f 0%, var(--bg) 55%) fixed;
+    color: var(--ink);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 19px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Faint circuit-board grid behind everything */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(57, 216, 196, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(57, 216, 196, 0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- Hero ---------- */
+  header {
+    text-align: center;
+    padding: 18vh 0 12vh;
+  }
+
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--neon);
+    opacity: 0.85;
+    margin-bottom: 28px;
+  }
+
+  .glass { font-size: 30px; display: inline-block; margin-bottom: 18px; filter: saturate(0.85); }
+
+  h1 {
+    font-family: "Cinzel", serif;
+    font-weight: 700;
+    font-size: clamp(40px, 9vw, 76px);
+    letter-spacing: 0.04em;
+    line-height: 1.05;
+    color: var(--gold-soft);
+    text-shadow: 0 0 32px rgba(200, 163, 90, 0.25);
+  }
+
+  .subtitle {
+    font-family: "Cinzel", serif;
+    font-weight: 400;
+    font-size: clamp(15px, 3.5vw, 22px);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 16px;
+  }
+
+  /* Art-Deco divider */
+  .deco {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 34px auto;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+  .deco::before, .deco::after {
+    content: "";
+    height: 1px;
+    width: 70px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+  .deco::after { background: linear-gradient(90deg, var(--gold), transparent); }
+  .deco span { font-size: 11px; }
+
+  .tagline {
+    font-style: italic;
+    font-size: clamp(19px, 4.5vw, 26px);
+    color: var(--ink);
+    max-width: 28ch;
+    margin: 0 auto;
+  }
+
+  /* ---------- CTA button ---------- */
+  .cta-row { margin-top: 44px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--viber);
+    color: #fff;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    padding: 16px 30px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    box-shadow: 0 8px 30px rgba(115, 96, 242, 0.35);
+  }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 12px 38px rgba(115, 96, 242, 0.5); }
+  .btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+  .knock {
+    display: block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--ink-dim);
+    margin-top: 16px;
+    text-transform: uppercase;
+  }
+
+  /* ---------- Card sections ---------- */
+  section { padding: 6vh 0; }
+
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.18));
+    padding: 44px 38px;
+    position: relative;
+  }
+  /* deco corners */
+  .card::before, .card::after {
+    content: "";
+    position: absolute;
+    width: 16px; height: 16px;
+    border: 1px solid var(--gold);
+    opacity: 0.55;
+  }
+  .card::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+  .card::after  { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+  .section-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--neon);
+    text-align: center;
+    margin-bottom: 26px;
+    opacity: 0.85;
+  }
+
+  /* Invitation */
+  .invite p { text-align: center; }
+  .invite .lede { font-style: italic; font-size: 22px; color: var(--gold-soft); margin-bottom: 26px; }
+  .rule {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    margin: 10px 0;
+  }
+  .rule b { color: var(--gold); font-weight: 500; }
+  .mind { margin-top: 28px; font-style: italic; color: var(--ink-dim); letter-spacing: 0.08em; }
+
+  /* House rules list */
+  ul.house { list-style: none; }
+  ul.house li {
+    padding: 16px 0 16px 42px;
+    border-bottom: 1px solid rgba(200,163,90,0.12);
+    position: relative;
+    font-size: 18px;
+  }
+  ul.house li:last-child { border-bottom: none; }
+  ul.house li::before {
+    counter-increment: r;
+    content: counter(r, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 18px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+    color: var(--gold);
+  }
+  ul.house { counter-reset: r; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    text-align: center;
+    padding: 9vh 0 6vh;
+    color: var(--ink-dim);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+  footer .deco { opacity: 0.4; }
+  footer a { color: var(--gold); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 520px) {
+    body { font-size: 18px; }
+    .card { padding: 34px 22px; }
+    header { padding: 12vh 0 8vh; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <p class="eyebrow">Members Only · By Invitation</p>
+      <div class="glass">🥃</div>
+      <h1>Token Talkers</h1>
+      <p class="subtitle">— The Hidden Layer —</p>
+
+      <div class="deco"><span>◆</span></div>
+
+      <p class="tagline">A quiet room for those who speak the language of machines.</p>
+
+      <div class="cta-row">
+        <!-- TODO: replace href with your Viber group invite link -->
+        <a class="btn" id="joinBtn" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1C6.5 1 2 4.9 2 9.7c0 2.6 1.3 4.9 3.4 6.5-.1 1.2-.6 2.9-1.4 4 .9-.1 3-.5 5-1.9.9.2 1.9.3 3 .3 5.5 0 10-3.9 10-8.7S17.5 1 12 1z"/></svg>
+          Whisper the Password
+        </a>
+        <span class="knock">Knock twice · Mind the door</span>
+      </div>
+    </header>
+
+    <section>
+      <div class="card invite">
+        <p class="section-label">The Invitation</p>
+        <p class="lede">You've been granted entry.</p>
+        <p>A quiet room for those who<br/>speak the language of machines.</p>
+        <p class="rule"><b>Rule one</b> — we keep it among ourselves.</p>
+        <p class="rule"><b>Rule two</b> — bring something worth sharing.</p>
+        <p class="mind">Welcome. Mind the door.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="card">
+        <p class="section-label">House Rules</p>
+        <ul class="house">
+          <li>Speak easy. What's said in the room stays in the room.</li>
+          <li>No spam, no lurkers — contribute or be shown the door.</li>
+          <li>Share the good stuff: prompts, tools, finds, failures.</li>
+          <li>Be kind to the humans. The bots can fend for themselves.</li>
+          <li>You were let in. Pass that courtesy on carefully.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="card" style="text-align:center;">
+        <p class="section-label">Find Your Seat</p>
+        <p class="tagline" style="max-width:32ch; font-style:normal;">The door is open to those who know to knock.</p>
+        <div class="cta-row">
+          <!-- TODO: same Viber link as above -->
+          <a class="btn" id="joinBtn2" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1C6.5 1 2 4.9 2 9.7c0 2.6 1.3 4.9 3.4 6.5-.1 1.2-.6 2.9-1.4 4 .9-.1 3-.5 5-1.9.9.2 1.9.3 3 .3 5.5 0 10-3.9 10-8.7S17.5 1 12 1z"/></svg>
+            Join on Viber
+          </a>
+          <span class="knock">Speak easy · Prompt hard</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="deco"><span>◆ ◆ ◆</span></div>
+      <p>Token Talkers — The Hidden Layer</p>
+      <p style="margin-top:6px; opacity:0.7;">No bots allowed. (Ironic, we know.)</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // ───────────────────────────────────────────────
+    // PLACEHOLDER: paste your Viber group invite link here.
+    // It will be applied to every "join" button on the page.
+    // Example: "https://invite.viber.com/?g2=xxxxxxxx"
+    // ───────────────────────────────────────────────
+    const VIBER_INVITE_LINK = "#REPLACE_WITH_YOUR_VIBER_LINK";
+
+    document.querySelectorAll('#joinBtn, #joinBtn2').forEach(function (a) {
+      if (VIBER_INVITE_LINK && VIBER_INVITE_LINK !== "#REPLACE_WITH_YOUR_VIBER_LINK") {
+        a.href = VIBER_INVITE_LINK;
+      } else {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          alert("The door isn't open yet — the Viber invite link will be added soon. Mind the door. 🥃");
+        });
+      }
+    });
+  </script>
+</body>
+</html>
