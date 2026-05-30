@@ -171,109 +171,6 @@
     text-transform: uppercase;
   }
 
-  /* ---------- Password gate ---------- */
-  .gate { margin-top: 40px; }
-  .gate.hide { animation: gateOut 0.6s ease forwards; }
-
-  .lock {
-    font-size: 40px;
-    display: inline-block;
-    filter: drop-shadow(0 0 14px rgba(200,163,90,0.35));
-    transition: transform 0.2s ease;
-  }
-  .lock.pop { animation: lockPop 0.7s cubic-bezier(.2,.8,.2,1.2); }
-
-  .gate-prompt {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 12px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--ink-dim);
-    margin: 16px 0 6px;
-  }
-  .gate-hint {
-    font-style: italic;
-    font-size: 18px;
-    color: var(--gold);
-    opacity: 0.8;
-    margin-bottom: 22px;
-  }
-
-  .gate-form {
-    display: inline-flex;
-    align-items: stretch;
-    gap: 0;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    overflow: hidden;
-    background: rgba(0,0,0,0.25);
-    box-shadow: inset 0 0 24px rgba(0,0,0,0.4);
-  }
-  .gate-form.wrong { animation: shake 0.5s; }
-
-  .gate-input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--gold-soft);
-    font-family: "JetBrains Mono", monospace;
-    font-size: 16px;
-    letter-spacing: 0.22em;
-    text-align: center;
-    padding: 14px 18px;
-    width: 240px;
-    transition: color 0.2s ease;
-  }
-  .gate-input::placeholder { color: rgba(154,149,138,0.5); letter-spacing: 0.3em; }
-  .gate-input.wrong { color: #d8765f; }
-
-  .gate-enter {
-    background: rgba(200,163,90,0.12);
-    border: none;
-    border-left: 1px solid var(--line);
-    color: var(--gold-soft);
-    font-family: "JetBrains Mono", monospace;
-    font-size: 13px;
-    letter-spacing: 0.12em;
-    padding: 0 22px;
-    cursor: pointer;
-    transition: background 0.18s ease;
-  }
-  .gate-enter:hover { background: rgba(200,163,90,0.22); }
-
-  .gate-msg {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    margin-top: 16px;
-    min-height: 18px;
-  }
-  .gate-msg.bad  { color: #d8765f; }
-  .gate-msg.good { color: var(--neon); }
-
-  #ctaHero[hidden] { display: none; }
-  #ctaHero.reveal { animation: reveal 0.8s cubic-bezier(.2,.7,.2,1) both; }
-
-  @keyframes shake {
-    10%,90% { transform: translateX(-2px); }
-    20%,80% { transform: translateX(4px); }
-    30%,50%,70% { transform: translateX(-8px); }
-    40%,60% { transform: translateX(8px); }
-  }
-  @keyframes lockPop {
-    0%   { transform: scale(1) rotate(0); }
-    35%  { transform: scale(1.45) rotate(-12deg); }
-    70%  { transform: scale(1.15) rotate(8deg); }
-    100% { transform: scale(1) rotate(0); }
-  }
-  @keyframes gateOut {
-    to { opacity: 0; transform: translateY(-10px); height: 0; margin: 0; }
-  }
-  @keyframes reveal {
-    0%   { opacity: 0; transform: translateY(16px) scale(0.97); filter: blur(5px); }
-    100% { opacity: 1; transform: none; filter: none; }
-  }
-
   /* ---------- Card sections ---------- */
   section { padding: 6vh 0; }
 
@@ -373,22 +270,7 @@
 
       <p class="tagline">A quiet room for those who speak the language of machines.</p>
 
-      <!-- Password gate -->
-      <div class="gate" id="gate">
-        <div class="lock" id="lock">🔒</div>
-        <p class="gate-prompt">Whisper the password to enter</p>
-        <p class="gate-hint">“<i>____ is all you need.</i>”</p>
-        <form class="gate-form" id="gateForm" autocomplete="off">
-          <input class="gate-input" id="gateInput" type="text" placeholder="· · · · · · ·"
-                 aria-label="Password" autocapitalize="off" autocorrect="off" spellcheck="false" />
-          <button class="gate-enter" type="submit">Knock&nbsp;✦</button>
-        </form>
-        <p class="gate-msg" id="gateMsg" role="status">&nbsp;</p>
-      </div>
-
-      <!-- Revealed only after unlock -->
-      <div class="cta-row" id="ctaHero" hidden>
-        <!-- TODO: replace href with your Viber group invite link -->
+      <div class="cta-row">
         <a class="btn" id="joinBtn" href="#" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1C6.5 1 2 4.9 2 9.7c0 2.6 1.3 4.9 3.4 6.5-.1 1.2-.6 2.9-1.4 4 .9-.1 3-.5 5-1.9.9.2 1.9.3 3 .3 5.5 0 10-3.9 10-8.7S17.5 1 12 1z"/></svg>
           Enter on Viber
@@ -452,90 +334,18 @@
     // ───────────────────────────────────────────────
     const VIBER_INVITE_LINK = "https://invite.viber.com/?g2=AQBzPOPQ4dn2H1aeI6PbEYU5azdy81R28hv6R%2Bv%2F0qa9XLHRcVLAu0vdPFT6yfFK";
 
-    // ───────────────────────────────────────────────
-    // PASSWORD: accepted answers (case-insensitive, spaces ignored).
-    // The on-page hint is: “____ is all you need.”  →  "attention"
-    // Change these to whatever phrase you want members to whisper.
-    // ───────────────────────────────────────────────
-    const PASSWORDS = ["attention", "attentionisallyouneed"];
-
     const linkReady = VIBER_INVITE_LINK && VIBER_INVITE_LINK !== "#REPLACE_WITH_YOUR_VIBER_LINK";
 
-    const gate    = document.getElementById('gate');
-    const form    = document.getElementById('gateForm');
-    const input   = document.getElementById('gateInput');
-    const msg     = document.getElementById('gateMsg');
-    const lock    = document.getElementById('lock');
-    const ctaHero = document.getElementById('ctaHero');
     const joinBtns = document.querySelectorAll('#joinBtn, #joinBtn2');
 
-    function isUnlocked() {
-      try { return localStorage.getItem('tt_unlocked') === '1'; } catch (e) { return false; }
-    }
-
-    function wireJoinButtons() {
-      joinBtns.forEach(function (a) {
-        if (linkReady) a.href = VIBER_INVITE_LINK;
-        a.addEventListener('click', function (e) {
-          // Lower button while still locked: nudge to the gate instead of joining.
-          if (a.id === 'joinBtn2' && !isUnlocked()) {
-            e.preventDefault();
-            gate.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(function () { input.focus(); }, 500);
-            return;
-          }
-          if (!linkReady) {
-            e.preventDefault();
-            alert("The door isn't open yet — the Viber invite link will be added soon. Mind the door. 🥃");
-          }
-        });
+    joinBtns.forEach(function (a) {
+      if (linkReady) a.href = VIBER_INVITE_LINK;
+      a.addEventListener('click', function (e) {
+        if (!linkReady) {
+          e.preventDefault();
+          alert("The door isn't open yet — the Viber invite link will be added soon. Mind the door. 🥃");
+        }
       });
-    }
-
-    function openDoor(animated) {
-      lock.textContent = '🔓';
-      if (animated) lock.classList.add('pop');
-      msg.textContent = '*click* — the door swings open.';
-      msg.className = 'gate-msg good';
-
-      const reveal = function () {
-        gate.classList.add('hide');
-        setTimeout(function () {
-          gate.style.display = 'none';
-          ctaHero.hidden = false;
-          ctaHero.classList.add('reveal');
-        }, animated ? 550 : 0);
-      };
-      animated ? setTimeout(reveal, 750) : reveal();
-
-      try { localStorage.setItem('tt_unlocked', '1'); } catch (e) {}
-    }
-
-    function denyDoor() {
-      form.classList.add('wrong');
-      input.classList.add('wrong');
-      msg.textContent = 'The door stays shut. Try again.';
-      msg.className = 'gate-msg bad';
-      setTimeout(function () {
-        form.classList.remove('wrong');
-        input.classList.remove('wrong');
-      }, 600);
-      input.select();
-    }
-
-    wireJoinButtons();
-
-    // Returning members skip the gate
-    if (isUnlocked()) openDoor(false);
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const guess = (input.value || '').toLowerCase().replace(/[^a-z]/g, '');
-      if (PASSWORDS.indexOf(guess) !== -1) {
-        openDoor(true);
-      } else {
-        denyDoor();
-      }
     });
   </script>
 </body>
